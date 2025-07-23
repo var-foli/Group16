@@ -14,7 +14,7 @@ struct Node {
 	vector<string> platforms;
 	vector<string> publishers;
 
-	// all nodes contain a 26-length array filled with nullptrs
+	// all nodes contain a 63-length array filled with nullptrs
 	array<Node*,63> letters {nullptr};
 
 	// Default node constructor. Some nodes will just contain an array linking to other letters
