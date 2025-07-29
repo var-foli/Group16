@@ -10,11 +10,18 @@ using namespace std;
 //Platforms,Publishers, Genres are often stored in double quotes. These fields will be stored into vectors of strings
 vector<string> dblQuotes(const string& dblQuotedField) {
     vector<string> tokens;
-    istringstream iss(dblQuotedField);
     string token;
-    while (iss >> token) {
-        tokens.push_back(token);
+
+    for (char ch : dblQuotedField) {
+        if (ch == ',') {
+            tokens.push_back(token);
+            token.clear();
+        } else {
+            token += ch;
+        }
     }
+    tokens.push_back(token);
+
     return tokens;
 }
 
