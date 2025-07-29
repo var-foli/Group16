@@ -5,7 +5,7 @@
 using namespace std;
 
 // insert function. need to traverse tree down, then back up 
-void PrefixTree::insert(Node* node, string name, int id, string title, float completionTime,
+void PrefixTree::insert(PrefixNode* prefixNode, string name, int id, string title, float completionTime,
                         vector<string> genres, string releaseDate, vector<string> platforms,
 	                      vector<string> publishers) {
 
@@ -18,46 +18,46 @@ void PrefixTree::insert(Node* node, string name, int id, string title, float com
   // if the name is only one letter long, we have reached the end of the word
   // inserting node with node information
   if (name.length() == 1) {
-    if (node->letters[index] != nullptr) {
+    if (prefixNode->letters[index] != nullptr) {
       // set node id and completionTime values
-      node->letters[index]->id = id;
-      node->letters[index]->title = title;
-      node->letters[index]->completionTime = completionTime;
-      node->letters[index]->genres = genres;
-      node->letters[index]->releaseDate = releaseDate;
-      node->letters[index]->platforms = platforms;
-      node->letters[index]->publishers = publishers;
+      prefixNode->letters[index]->id = id;
+      prefixNode->letters[index]->title = title;
+      prefixNode->letters[index]->completionTime = completionTime;
+      prefixNode->letters[index]->genres = genres;
+      prefixNode->letters[index]->releaseDate = releaseDate;
+      prefixNode->letters[index]->platforms = platforms;
+      prefixNode->letters[index]->publishers = publishers;
     } else {
       // insert the final Node
-      node->letters[index] = new Node(id, title, completionTime, genres, 
+      prefixNode->letters[index] = new PrefixNode(id, title, completionTime, genres, 
                                                     releaseDate, platforms, publishers);
     }
   }
 
   // checking if the current letter has been inserted at this node yet
   // name[0]-'a' converts the first letter in the word to its ascii value and to an index value
-  else if (node->letters[index] != nullptr) {
+  else if (prefixNode->letters[index] != nullptr) {
     // calling the function recursively, with the name inserted minus its first letter
-    this->insert(node->letters[index], name.substr(1), id, title, completionTime,
+    this->insert(prefixNode->letters[index], name.substr(1), id, title, completionTime,
                 genres, releaseDate, platforms, publishers);
   } else {
-    node->letters[index] = new Node();
-    this->insert(node->letters[index], name.substr(1), id, title, completionTime,
+    prefixNode->letters[index] = new PrefixNode();
+    this->insert(prefixNode->letters[index], name.substr(1), id, title, completionTime,
                 genres, releaseDate, platforms, publishers);
   }
   return;
 }
 
 tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vector<vector<string>>, 
-      vector<vector<string>>> PrefixTree::getAll(Node* node) {
+      vector<vector<string>>> PrefixTree::getAll(PrefixNode* prefixNode) {
         tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vector<vector<string>>, 
               vector<vector<string>>> returnAll;
-        stack<Node*> prefixStack;
+        stack<PrefixNode*> prefixStack;
 
-        prefixStack.push(node);
+        prefixStack.push(prefixNode);
         
         while (prefixStack.empty() != true) {
-          Node* currentNode = prefixStack.top();
+          PrefixNode* currentNode = prefixStack.top();
           prefixStack.pop();
 
           if (currentNode != nullptr) {
@@ -83,32 +83,32 @@ tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vec
       }
 
 
-vector<vector<string>> PrefixTree::getPlatforms(Node* node) {
+vector<vector<string>> PrefixTree::getPlatforms(PrefixNode* prefixNode) {
   vector<vector<string>> returnPlatforms;
   return returnPlatforms;
 }
 
-vector<vector<string>> PrefixTree::getGenres(Node* node) {
+vector<vector<string>> PrefixTree::getGenres(PrefixNode* prefixNode) {
   vector<vector<string>> returnGenres;
   return returnGenres;
 }
 
 // retrieved the node with matching name
-Node* PrefixTree::retrieve(Node* node, string name) {
+PrefixNode* PrefixTree::retrieve(PrefixNode* prefixNode, string name) {
   int index = getIndex(name[0]);
 
   if (name.length() == 0) {
     // return the Node
-    return node;
-  } else if (node->letters[index] != nullptr) {
+    return prefixNode;
+  } else if (prefixNode->letters[index] != nullptr) {
     // calling the function recursively, with the name inserted minus its first letter
-    return this->retrieve(node->letters[index], name.substr(1));
+    return this->retrieve(prefixNode->letters[index], name.substr(1));
   }
   return nullptr;
 }
 
-bool PrefixTree::nodeEmpty(array<Node*,63> nodes) {
-  for (auto it = nodes.begin(); it != nodes.end(); it++) {
+bool PrefixTree::nodeEmpty(array<PrefixNode*,63> prefixNodes) {
+  for (auto it = prefixNodes.begin(); it != prefixNodes.end(); it++) {
         if (*it != nullptr) {
             return false;
         }
@@ -128,7 +128,7 @@ int PrefixTree::getIndex(char letter) {
   } else return -1;
 }
 
-Node::~Node() {
+PrefixNode::~PrefixNode() {
   for (int i = 0; i < letters.size(); i ++) {
     delete letters[i];
     letters[i] = nullptr;
