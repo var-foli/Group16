@@ -39,8 +39,6 @@ struct PrefixNode {
 };
 
 class PrefixTree {
-	PrefixNode* head;
-
 	public:
 		void insert(PrefixNode* prefixNode, string name, int id, string title, float completionTime,
 								vector<string> genres, string releaseDate, vector<string> platforms,
@@ -48,8 +46,10 @@ class PrefixTree {
 		PrefixNode* retrieve(PrefixNode* prefixNode, string name);
 		tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, 
 					vector<vector<string>>, vector<vector<string>>>getAll(PrefixNode* prefixNode);
-		vector<vector<string>> PrefixTree::getPlatforms(PrefixNode* prefixNode);
-		vector<vector<string>> PrefixTree::getGenres(PrefixNode* prefixNode);
+		tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, 
+					vector<vector<string>>, vector<vector<string>>>searchName(PrefixNode* prefixNode, string name);
+		vector<vector<string>> getPlatforms(PrefixNode* prefixNode);
+		vector<vector<string>> getGenres(PrefixNode* prefixNode);
 		bool nodeEmpty(array<PrefixNode*,63> prefixNode);
 		int getIndex(char letter);
 };

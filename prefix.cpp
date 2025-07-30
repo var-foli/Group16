@@ -8,7 +8,11 @@ using namespace std;
 void PrefixTree::insert(PrefixNode* prefixNode, string name, int id, string title, float completionTime,
                         vector<string> genres, string releaseDate, vector<string> platforms,
 	                      vector<string> publishers) {
-
+  // edge case if empty name entered
+  if (name.length() == 0) {
+    return;
+  }
+  
   // convert name[0] char to index based on whether it is ' ', 0-9, A-Z, or a-z
   int index = getIndex(name[0]);
 
@@ -82,6 +86,35 @@ tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vec
         return returnAll;
       }
 
+tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vector<vector<string>>, 
+      vector<vector<string>>> PrefixTree::searchName(PrefixNode* prefixNode, string name) {
+  // edge case if empty name entered
+  if (name.length() == 0) {
+    return {};
+  }
+  
+  // convert name[0] char to index based on whether it is ' ', 0-9, A-Z, or a-z
+  int index = getIndex(name[0]);
+
+  // if char is invalid, return an empty vector
+  if (index == -1) return {};
+
+  // if the name is only one letter long, we have reached the end of the word and return all words 
+  // with that prefix
+  if (name.length() == 1) {
+    if (prefixNode->letters[index] != nullptr) {
+      return this->getAll(prefixNode->letters[index]);
+    } else {
+      return {};
+    }
+  } else if (prefixNode->letters[index] != nullptr) {
+    // calling the function recursively, with the name inserted minus its first letter
+    return this->searchName(prefixNode->letters[index], name.substr(1));
+  } else {
+    return {};
+  }
+}
+
 
 vector<vector<string>> PrefixTree::getPlatforms(PrefixNode* prefixNode) {
   vector<vector<string>> returnPlatforms;
@@ -95,12 +128,18 @@ vector<vector<string>> PrefixTree::getGenres(PrefixNode* prefixNode) {
 
 // retrieved the node with matching name
 PrefixNode* PrefixTree::retrieve(PrefixNode* prefixNode, string name) {
-  int index = getIndex(name[0]);
-
   if (name.length() == 0) {
     // return the Node
     return prefixNode;
-  } else if (prefixNode->letters[index] != nullptr) {
+  } 
+  
+  int index = getIndex(name[0]);
+
+  if (index == -1) {
+    return nullptr;
+  }
+  
+  if (prefixNode->letters[index] != nullptr) {
     // calling the function recursively, with the name inserted minus its first letter
     return this->retrieve(prefixNode->letters[index], name.substr(1));
   }
