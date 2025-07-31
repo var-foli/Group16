@@ -44,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget_data->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget_data->setSortingEnabled(true);
     ui->tableWidget_data->setAlternatingRowColors(true);
+
+    ui->searchToggle->setText(QString::fromStdString("Switch to Skip List"));
 }
 
 MainWindow::~MainWindow()
@@ -96,6 +98,11 @@ void MainWindow::resetTable()
 void MainWindow::on_searchToggle_clicked()
 {
     prefixSearch = !prefixSearch;
-    // cout << "Prefix search: " << prefixSearch << endl;
+    ui->searchToggle->setText(QString::fromStdString(prefixSearch ? "Switch to Skip List" : "Switch to Prefix Tree"));
+}
+
+void MainWindow::on_resetButton_clicked()
+{
+
 }
 

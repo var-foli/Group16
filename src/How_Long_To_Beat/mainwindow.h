@@ -25,6 +25,8 @@ private slots:
 
     void on_searchToggle_clicked();
 
+    void on_resetButton_clicked();
+
 private:
     bool prefixSearch = true;
     vector<Node> games;

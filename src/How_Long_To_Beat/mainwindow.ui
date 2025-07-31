@@ -114,14 +114,17 @@ border-radius: 15px;
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>TOGGLE SEARCH TYPE</string>
+          <string>Toggle Search Type</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="resetButton">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="text">
-          <string>RESET TABLE</string>
+          <string>Reset Table</string>
          </property>
         </widget>
        </item>
