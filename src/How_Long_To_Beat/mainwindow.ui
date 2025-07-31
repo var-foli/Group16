@@ -37,9 +37,6 @@ background-color: rgba(97, 24, 45, 200);
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="cursor">
-    <cursorShape>CrossCursor</cursorShape>
-   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label">
