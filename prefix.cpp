@@ -5,7 +5,7 @@
 using namespace std;
 
 // insert function. need to traverse tree down, then back up 
-void PrefixTree::insert(PrefixNode* prefixNode, string name, int id, string title, float completionTime,
+void PrefixTree::insert(PrefixNode* prefixNode, string name, string title, float completionTime,
                         vector<string> genres, string releaseDate, vector<string> platforms,
 	                      vector<string> publishers) {
   // edge case if empty name entered
@@ -23,8 +23,7 @@ void PrefixTree::insert(PrefixNode* prefixNode, string name, int id, string titl
   // inserting node with node information
   if (name.length() == 1) {
     if (prefixNode->letters[index] != nullptr) {
-      // set node id and completionTime values
-      prefixNode->letters[index]->id = id;
+      // set node values
       prefixNode->letters[index]->title = title;
       prefixNode->letters[index]->completionTime = completionTime;
       prefixNode->letters[index]->genres = genres;
@@ -33,7 +32,7 @@ void PrefixTree::insert(PrefixNode* prefixNode, string name, int id, string titl
       prefixNode->letters[index]->publishers = publishers;
     } else {
       // insert the final Node
-      prefixNode->letters[index] = new PrefixNode(id, title, completionTime, genres, 
+      prefixNode->letters[index] = new PrefixNode(title, completionTime, genres, 
                                                     releaseDate, platforms, publishers);
     }
   }
@@ -42,11 +41,11 @@ void PrefixTree::insert(PrefixNode* prefixNode, string name, int id, string titl
   // name[0]-'a' converts the first letter in the word to its ascii value and to an index value
   else if (prefixNode->letters[index] != nullptr) {
     // calling the function recursively, with the name inserted minus its first letter
-    this->insert(prefixNode->letters[index], name.substr(1), id, title, completionTime,
+    this->insert(prefixNode->letters[index], name.substr(1), title, completionTime,
                 genres, releaseDate, platforms, publishers);
   } else {
     prefixNode->letters[index] = new PrefixNode();
-    this->insert(prefixNode->letters[index], name.substr(1), id, title, completionTime,
+    this->insert(prefixNode->letters[index], name.substr(1), title, completionTime,
                 genres, releaseDate, platforms, publishers);
   }
   return;
@@ -66,7 +65,7 @@ tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vec
 
           if (currentNode != nullptr) {
             // if the current node has game data, update the return tuple
-            if (currentNode->id != 0) {
+            if (currentNode->title != "~") {
               get<0>(returnAll).push_back(currentNode->title);
               get<1>(returnAll).push_back(currentNode->completionTime);
               get<2>(returnAll).push_back(currentNode->genres);
