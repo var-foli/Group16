@@ -11,3 +11,5 @@ This table contains a few functionalities:
 - This will clear the table view to its default state (alphabetical by title).
 ### Filter by Column
 - You can click on any of the columns in the table to filter by Ascending or Descending order using a standard alphanumerical ordering.
+
+## Sources and References
