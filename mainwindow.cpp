@@ -1,12 +1,16 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <iostream>
 #include <string>
-#include "testgameclass.h"
+#include "game.h"
 #include <QApplication>
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QStandardItem>
+#include "ParseCSV.h"
+#include "prefix.h"
+#include <QDir>
+#include <QDebug>
+#include <iostream>
 
 QStandardItemModel* createModel(int rows, int cols){
     QStandardItemModel* model = new QStandardItemModel(rows, cols);
@@ -21,26 +25,23 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // API call to Kaggle to get the datasets
+    // qDebug() << "Current working directory:" << QDir::currentPath();
+    vector<Node> games = parseCSV("./data/games - Copy.csv");
 
-    int numRows = 10;
     QStandardItemModel* model = createModel(0, 6);
     ui->tableView_data->setModel(model);
 
-    for(int i = 0; i < numRows; ++i){
+    for(int i = 0; i < games.size(); i++){
         QList<QStandardItem*> row;
-        TestGameClass game("GoW " + std::to_string(i+1),
-                           std::to_string(10 + i) + " hrs",
-                           {"Action","Adventure","Hack and Slash"},
-                           std::to_string(2010 + i),
-                           {"Playstation 4", "PC"},
-                           {"SCEA"});
-        row << new QStandardItem(QString::fromStdString(game.name));
-        row << new QStandardItem(QString::fromStdString(game.avgDuration));
-        row << new QStandardItem(QString::fromStdString(game.genres));
-        row << new QStandardItem(QString::fromStdString(game.releaseDate));
-        row << new QStandardItem(QString::fromStdString(game.platforms));
-        row << new QStandardItem(QString::fromStdString(game.publishers));
+        row << new QStandardItem(QString::fromStdString(games[i].title));
+        row << new QStandardItem(QString::fromStdString(to_string(games[i].completion)));
+        row << new QStandardItem(QString::fromStdString(Game::vectorToStr(games[i].genres)));
+        row << new QStandardItem(QString::fromStdString(games[i].release));
+        row << new QStandardItem(QString::fromStdString(Game::vectorToStr(games[i].platforms)));
+        row << new QStandardItem(QString::fromStdString(Game::vectorToStr(games[i].publisher)));
+
+        PrefixNode* node = new PrefixNode();
+        tree.insert(node, games[i].title, games[i].title, games[i].completion, games[i].genres, games[i].release, games[i].platforms, games[i].publisher);
 
         model->appendRow(row);
     }
@@ -63,8 +64,26 @@ MainWindow::~MainWindow()
 void MainWindow::on_txtSearchBox_textChanged(const QString &arg1)
 {
     // This is the built-in search filter functionality. Do we need to replace it with our own implementation?
-    proxyModel->setFilterKeyColumn(0);
-    proxyModel->setFilterFixedString(arg1);
-    ui->tableView_data->resizeRowsToContents();
+    // proxyModel->setFilterKeyColumn(0);
+    // proxyModel->setFilterFixedString(arg1);
+    // ui->tableView_data->resizeRowsToContents();
+}
+
+
+void MainWindow::on_txtSearchBox_returnPressed()
+{
+    std::string input = ui->txtSearchBox->text().toStdString();
+    cout << "Search: " << input << endl;
+
+    // Access prefix tree
+    // Enter input into prefix tree search function and get a node back
+    PrefixNode* node = new PrefixNode();
+    tuple output = tree.searchName(node, input);
+
+    vector<string> title = get<0>(output);
+    for(const string& s : title){
+        cout << s << endl;
+    }
+    // Display only that node in the table
 }
 
