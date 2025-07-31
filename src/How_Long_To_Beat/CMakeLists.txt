@@ -23,6 +23,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(How_Long_To_Beat
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ../../../../Qt Projects/Test1/Test1/game.h ../../../../Qt Projects/Test1/Test1/ParseCSV.h ../../../../Qt Projects/Test1/Test1/prefix.h ../../../../Qt Projects/Test1/Test1/game.cpp ../../../../Qt Projects/Test1/Test1/ParseCSV.cpp ../../../../Qt Projects/Test1/Test1/prefix.cpp
+        ../../../../Qt Projects/Test1/Test1/game.h ../../../../Qt Projects/Test1/Test1/ParseCSV.h ../../../../Qt Projects/Test1/Test1/prefix.h ../../../../Qt Projects/Test1/Test1/game.cpp ../../../../Qt Projects/Test1/Test1/ParseCSV.cpp ../../../../Qt Projects/Test1/Test1/prefix.cpp
+        game.cpp ParseCSV.cpp prefix.cpp
+        ParseCSV.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET How_Long_To_Beat APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
