@@ -2,7 +2,7 @@
 This project is an interactive table using data parsed from a [Kaggle](https://www.kaggle.com/datasets/kasumil5x/howlongtobeat-games-completion-times) dataset focusing on the average completion rate of numerous video games as well as their platforms, publishers, and release dates. 
 
 ## Running the Program
-
+Unzip the latest release and run the exe in the folder. 
 
 ## How to Use Program
 This table contains a few functionalities:
