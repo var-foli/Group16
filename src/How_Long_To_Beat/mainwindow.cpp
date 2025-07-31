@@ -1,0 +1,101 @@
+#include "mainwindow.h"
+#include "./ui_mainwindow.h"
+#include <string>
+#include "game.h"
+#include <QApplication>
+#include <QTableView>
+#include <QStandardItemModel>
+#include <QStandardItem>
+#include "ParseCSV.h"
+#include "prefix.h"
+#include <QDir>
+#include <QDebug>
+#include <iostream>
+
+QStandardItemModel* createModel(int rows, int cols){
+    QStandardItemModel* model = new QStandardItemModel(rows, cols);
+    QStringList headers = {"Name", "Completion Time", "Genre(s)", "Release Date", "Platform(s)", "Publisher(s)"};
+    model->setHorizontalHeaderLabels(headers);
+    return model;
+}
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    // qDebug() << "Current working directory:" << QDir::currentPath();
+    games = parseCSV("./data/games.csv");
+
+    ui->tableWidget_data->setRowCount(games.size());
+    for(int i = 0; i < games.size(); ++i){
+        ui->tableWidget_data->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(games[i].title)));
+        ui->tableWidget_data->setItem(i, 1, new QTableWidgetItem(QString::number(games[i].completion, 'f', 2) + QString::fromStdString(" hrs")));
+        ui->tableWidget_data->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(Game::vectorToStr(games[i].genres))));
+        ui->tableWidget_data->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(games[i].release)));
+        ui->tableWidget_data->setItem(i, 4, new QTableWidgetItem(QString::fromStdString(Game::vectorToStr(games[i].platforms))));
+        ui->tableWidget_data->setItem(i, 5, new QTableWidgetItem(QString::fromStdString(Game::vectorToStr(games[i].publisher))));
+
+        tree.insert(prefixTreeHead, games[i].title, games[i].title, games[i].completion, games[i].genres, games[i].release, games[i].platforms, games[i].publisher);
+    }
+
+    ui->tableWidget_data->resizeRowsToContents();
+    ui->tableWidget_data->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_data->setSortingEnabled(true);
+    ui->tableWidget_data->setAlternatingRowColors(true);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_txtSearchBox_returnPressed()
+{
+    std::string input = ui->txtSearchBox->text().toStdString();
+    // ui->txtSearchBox->clear();
+
+    resetTable();
+
+    // PREFIX TREE IMPLEMENTATION
+    if(prefixSearch){
+        // Access prefix tree
+        // Enter input into prefix tree search function and get a node back
+        tuple output = tree.searchName(prefixTreeHead, input);
+        int resultSize = get<0>(output).size();
+        if(resultSize == 0) return;
+        // This returns multiple items with the search term in their title
+        // Clear table view
+        for(int i = 0; i < games.size(); ++i){
+            bool matching = false;
+            for(int j = 0; j < resultSize; ++j){
+                if(ui->tableWidget_data->item(i, 0)->text().toStdString() == get<0>(output)[j]) matching = true;
+            }
+
+            if(matching) continue;
+            ui->tableWidget_data->setRowHidden(i, true);
+        }
+        // Display only that node in the table
+    }
+    else{
+        // SKIP LIST IMPLEMENTATION
+        cout << "Skip list search" << endl;
+    }
+
+}
+
+void MainWindow::resetTable()
+{
+    for(int i = 0; i < games.size(); ++i){
+        ui->tableWidget_data->setRowHidden(i, false);
+    }
+}
+
+
+void MainWindow::on_searchToggle_clicked()
+{
+    prefixSearch = !prefixSearch;
+    // cout << "Prefix search: " << prefixSearch << endl;
+}
+
