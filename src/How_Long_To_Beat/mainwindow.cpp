@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget_data->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget_data->setSortingEnabled(true);
     ui->tableWidget_data->setAlternatingRowColors(true);
+    ui->tableWidget_data->verticalHeader()->setVisible(false);
 
     ui->searchToggle->setText(QString::fromStdString("Switch to Skip List"));
 }

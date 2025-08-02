@@ -21,7 +21,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QMainWindow{
-background-color: rgb(158, 222, 187);
+background-color: #1A1D23;
 }
 
 QPushButton {
@@ -53,7 +53,7 @@ background-color: rgba(97, 24, 45, 200);
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(66, 94, 56);</string>
+       <string notr="true">color: white;</string>
       </property>
       <property name="text">
        <string>- How Long To Beat? -</string>
@@ -83,7 +83,7 @@ background-color: rgba(97, 24, 45, 200);
       <property name="styleSheet">
        <string notr="true">QLineEdit{
 color: black;
-background-color: rgba(255, 255, 255, 100);
+background-color: rgba(255, 255, 255, 160);
 border: none;
 border-radius: 15px;
 }</string>
@@ -95,7 +95,7 @@ border-radius: 15px;
        <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
       <property name="placeholderText">
-       <string>Search name...</string>
+       <string>Search game...</string>
       </property>
      </widget>
     </item>
@@ -136,12 +136,21 @@ border-radius: 15px;
       <property name="styleSheet">
        <string notr="true">QTableWidget {
     background-color: white;
-    alternate-background-color: #AFDE9E; 
+    alternate-background-color: #EFCACA; 
+	border-style: none;
 }
+
+QHeaderView::section {
+    background-color: #2b2b2b;
+    color: white;
+    font-weight: bold;
+    padding: 4px;
+}
+
 
 QScrollBar:vertical {
     background: transparent;
-    width: 10px;
+    width: 5px;
     margin: 0;
 }
 
