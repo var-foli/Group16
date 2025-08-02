@@ -56,9 +56,9 @@ MainWindow::~MainWindow()
 void MainWindow::on_txtSearchBox_returnPressed()
 {
     std::string input = ui->txtSearchBox->text().toStdString();
-    // ui->txtSearchBox->clear();
 
     resetTable();
+    if(input.empty()) return;
 
     // PREFIX TREE IMPLEMENTATION
     if(prefixSearch){
@@ -66,7 +66,10 @@ void MainWindow::on_txtSearchBox_returnPressed()
         // Enter input into prefix tree search function and get a node back
         tuple output = tree.searchName(prefixTreeHead, input);
         int resultSize = get<0>(output).size();
-        if(resultSize == 0) return;
+        if(resultSize == 0) {
+            hideTable();
+            return;
+        }
         // This returns multiple items with the search term in their title
         // Clear table view
         for(int i = 0; i < games.size(); ++i){
@@ -94,6 +97,13 @@ void MainWindow::resetTable()
     }
 }
 
+void MainWindow::hideTable()
+{
+    for(int i = 0; i < games.size(); ++i){
+        ui->tableWidget_data->setRowHidden(i, true);
+    }
+}
+
 
 void MainWindow::on_searchToggle_clicked()
 {
@@ -103,6 +113,8 @@ void MainWindow::on_searchToggle_clicked()
 
 void MainWindow::on_resetButton_clicked()
 {
-
+    resetTable();
+    ui->tableWidget_data->clearFocus();
+    ui->tableWidget_data->clearSelection();
 }
 

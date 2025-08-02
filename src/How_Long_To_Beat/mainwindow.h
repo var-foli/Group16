@@ -35,5 +35,6 @@ private:
     Ui::MainWindow *ui;
     QSortFilterProxyModel* proxyModel;
     void resetTable();
+    void hideTable();
 };
 #endif // MAINWINDOW_H
