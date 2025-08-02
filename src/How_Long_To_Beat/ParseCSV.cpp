@@ -13,13 +13,25 @@ using namespace std;
 vector<string> dblQuotes(const string& dblQuotedField) {
     vector<string> tokens;
     string token;
+    bool first = true;
 
     for (char ch : dblQuotedField) {
         if (ch == ',') {
+            if (!first) {
+                while (!token.empty() && token[0] == ' ') {
+                    token.erase(0,1);
+                }
+            }
             tokens.push_back(token);
             token.clear();
+            first = false;
         } else {
             token += ch;
+        }
+    }
+    if (!first) {
+        while (!token.empty() && token[0] == ' ') {
+            token.erase(0,1);
         }
     }
     tokens.push_back(token);

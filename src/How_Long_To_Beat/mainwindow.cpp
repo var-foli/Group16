@@ -11,6 +11,7 @@
 #include <QDir>
 #include <QDebug>
 #include <iostream>
+#include "skipList.h"
 
 QStandardItemModel* createModel(int rows, int cols){
     QStandardItemModel* model = new QStandardItemModel(rows, cols);
@@ -25,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // qDebug() << "Current working directory:" << QDir::currentPath();
+    //qDebug() << "Current working directory:" << QDir::currentPath();
     games = parseCSV("./data/games.csv");
 
     ui->tableWidget_data->setRowCount(games.size());
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableWidget_data->setItem(i, 5, new QTableWidgetItem(QString::fromStdString(Game::vectorToStr(games[i].publisher))));
 
         tree.insert(prefixTreeHead, games[i].title, games[i].title, games[i].completion, games[i].genres, games[i].release, games[i].platforms, games[i].publisher);
+        skiplist.insert(games[i]);
     }
 
     ui->tableWidget_data->resizeRowsToContents();
@@ -85,7 +87,21 @@ void MainWindow::on_txtSearchBox_returnPressed()
     }
     else{
         // SKIP LIST IMPLEMENTATION
-        cout << "Skip list search" << endl;
+
+        const Node* result = skiplist.search(input);
+        if (!result) {
+            hideTable();
+            return;
+        }
+
+        for (int i = 0; i < games.size(); ++i) {
+            if (games[i].title == result->title) {
+                ui->tableWidget_data->setRowHidden(i, false);
+            } else {
+                ui->tableWidget_data->setRowHidden(i, true);
+            }
+        }
+
     }
 
 }

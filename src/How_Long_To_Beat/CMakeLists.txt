@@ -26,7 +26,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         prefix.cpp
         ParseCSV.cpp
         game.cpp
-        game.h ParseCSV.h prefix.h
+            skipList.cpp
+            game.h ParseCSV.h prefix.h skipList.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET How_Long_To_Beat APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

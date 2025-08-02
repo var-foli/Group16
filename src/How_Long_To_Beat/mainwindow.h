@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSortFilterProxyModel>
 #include "prefix.h"
+#include "skipList.h"
 #include "ParseCSV.h"
 
 QT_BEGIN_NAMESPACE
@@ -32,6 +33,7 @@ private:
     vector<Node> games;
     PrefixNode* prefixTreeHead = new PrefixNode();
     PrefixTree tree;
+    SkipList skiplist;
     Ui::MainWindow *ui;
     QSortFilterProxyModel* proxyModel;
     void resetTable();
