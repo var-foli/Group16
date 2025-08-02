@@ -108,10 +108,11 @@ vector<Node> parseCSV(const string& filename) {
             continue;
         }
         //Double quote areas will be stored as vectors of strings
-        node.publisher = dblQuotes(cols[10]);
-        node.platforms = dblQuotes(cols[11]);
-        node.genres = dblQuotes(cols[12]);
-        node.release = cols[13];
+        node.publisher = dblQuotes(cols[10].empty() ? "N/A" : cols[10]);
+        node.platforms = dblQuotes(cols[11].empty() ? "N/A" : cols[11]);
+        node.genres = dblQuotes(cols[12].empty() ? "N/A" : cols[12]);
+        // node.release = cols[13];
+        node.release = cols[13].empty() ? "N/A" : cols[13];
 
         result.push_back(node);
     }
