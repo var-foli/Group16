@@ -12,6 +12,7 @@
 #include <QDebug>
 #include <iostream>
 #include "skipList.h"
+#include <chrono>
 
 QStandardItemModel* createModel(int rows, int cols){
     QStandardItemModel* model = new QStandardItemModel(rows, cols);
@@ -64,6 +65,7 @@ void MainWindow::on_txtSearchBox_returnPressed()
 
     // PREFIX TREE IMPLEMENTATION
     if(prefixSearch){
+        auto start = std::chrono::high_resolution_clock::now();
         // Access prefix tree
         // Enter input into prefix tree search function and get a node back
         tuple output = tree.searchName(prefixTreeHead, input);
@@ -84,13 +86,17 @@ void MainWindow::on_txtSearchBox_returnPressed()
             ui->tableWidget_data->setRowHidden(i, true);
         }
         // Display only that node in the table
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> duration = end - start;
+        cout << "Prefix Tree duration: " << duration.count() << " ms" << endl;
     }
     else{
         // SKIP LIST IMPLEMENTATION
-
+        auto start = std::chrono::high_resolution_clock::now();
         const Node* result = skiplist.search(input);
         if (!result) {
             hideTable();
+            cout << "No result" << endl;
             return;
         }
 
@@ -101,7 +107,9 @@ void MainWindow::on_txtSearchBox_returnPressed()
                 ui->tableWidget_data->setRowHidden(i, true);
             }
         }
-
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> duration = end - start;
+        cout << "Skip list duration: " << duration.count() << " ms" << endl;
     }
 
 }
@@ -132,5 +140,7 @@ void MainWindow::on_resetButton_clicked()
     resetTable();
     ui->tableWidget_data->clearFocus();
     ui->tableWidget_data->clearSelection();
+    ui->txtSearchBox->clear();
+    ui->txtSearchBox->clearFocus();
 }
 
