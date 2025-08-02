@@ -60,7 +60,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_txtSearchBox_returnPressed()
 {
     std::string input = ui->txtSearchBox->text().toStdString();
-
+    int count = 0;
     resetTable();
     if(input.empty()) return;
 
@@ -73,8 +73,10 @@ void MainWindow::on_txtSearchBox_returnPressed()
         int resultSize = get<0>(output).size();
         if(resultSize == 0) {
             hideTable();
+            ui->resultCountLabel->setText(QString::fromStdString("0 results found..."));
             return;
         }
+        count = resultSize;
         // This returns multiple items with the search term in their title
         // Clear table view
         for(int i = 0; i < games.size(); ++i){
@@ -97,9 +99,12 @@ void MainWindow::on_txtSearchBox_returnPressed()
         const Node* result = skiplist.search(input);
         if (!result) {
             hideTable();
-            cout << "No result" << endl;
+            // cout << "No result" << endl;
+            ui->resultCountLabel->setText(QString::fromStdString("0 results found..."));
             return;
         }
+
+        count = 1;
 
         for (int i = 0; i < games.size(); ++i) {
             if (games[i].title == result->title) {
@@ -112,7 +117,8 @@ void MainWindow::on_txtSearchBox_returnPressed()
         std::chrono::duration<double, std::milli> duration = end - start;
         cout << "Skip list duration: " << duration.count() << " ms" << endl;
     }
-
+    std::string countMessage = to_string(count) + " result" + (count > 1 ? "s" : "") + " found...";
+    ui->resultCountLabel->setText(QString::fromStdString(countMessage));
 }
 
 void MainWindow::resetTable()
@@ -120,6 +126,7 @@ void MainWindow::resetTable()
     for(int i = 0; i < games.size(); ++i){
         ui->tableWidget_data->setRowHidden(i, false);
     }
+    ui->resultCountLabel->clear();
 }
 
 void MainWindow::hideTable()

@@ -132,6 +132,19 @@ border-radius: 15px;
      </widget>
     </item>
     <item>
+     <widget class="QLabel" name="resultCountLabel">
+      <property name="styleSheet">
+       <string notr="true">color: rgba(255, 255, 255, 150);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QTableWidget" name="tableWidget_data">
       <property name="styleSheet">
        <string notr="true">QTableWidget {
