@@ -114,17 +114,6 @@ tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vec
   }
 }
 
-
-vector<vector<string>> PrefixTree::getPlatforms(PrefixNode* prefixNode) {
-  vector<vector<string>> returnPlatforms;
-  return returnPlatforms;
-}
-
-vector<vector<string>> PrefixTree::getGenres(PrefixNode* prefixNode) {
-  vector<vector<string>> returnGenres;
-  return returnGenres;
-}
-
 // retrieved the node with matching name
 PrefixNode* PrefixTree::retrieve(PrefixNode* prefixNode, string name) {
   if (name.length() == 0) {
