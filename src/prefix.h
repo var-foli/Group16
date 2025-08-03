@@ -41,7 +41,6 @@ class PrefixTree {
 		void insert(PrefixNode* prefixNode, string name, string title, float completionTime,
 								vector<string> genres, string releaseDate, vector<string> platforms,
 								vector<string> publishers);
-		PrefixNode* retrieve(PrefixNode* prefixNode, string name);
 		tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, 
 					vector<vector<string>>, vector<vector<string>>>getAll(PrefixNode* prefixNode);
 		tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, 
