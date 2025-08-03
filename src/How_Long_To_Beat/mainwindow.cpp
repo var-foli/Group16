@@ -104,16 +104,13 @@ void MainWindow::on_txtSearchBox_returnPressed()
             return;
         }
         count = 1;
-        //clear table and show single search result
-        ui->tableWidget_data->clearContents();
-        ui->tableWidget_data->setRowCount(1);
-        ui->tableWidget_data->setItem(0, 0, new QTableWidgetItem(QString::fromStdString(result->title)));
-        ui->tableWidget_data->setItem(0, 1, new QTableWidgetItem(QString::number(result->completion, 'f', 2) + QString::fromStdString(" hrs")));
-        ui->tableWidget_data->setItem(0, 2, new QTableWidgetItem(QString::fromStdString(Game::vectorToStr(result->genres))));
-        ui->tableWidget_data->setItem(0, 3, new QTableWidgetItem(QString::fromStdString(result->release)));
-        ui->tableWidget_data->setItem(0, 4, new QTableWidgetItem(QString::fromStdString(Game::vectorToStr(result->platforms))));
-        ui->tableWidget_data->setItem(0, 5, new QTableWidgetItem(QString::fromStdString(Game::vectorToStr(result->publisher))));
-        ui->tableWidget_data->resizeRowsToContents();
+
+        for(int i = 0; i < games.size(); ++i){
+            bool matching = false;
+            if(ui->tableWidget_data->item(i, 0)->text().toStdString() == result->title) matching = true;
+            if(matching) continue;
+            ui->tableWidget_data->setRowHidden(i, true);
+        }
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> duration = end - start;
