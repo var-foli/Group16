@@ -16,3 +16,8 @@ This table contains a few functionalities:
 - You can click on any of the columns in the table to filter by Ascending or Descending order using a standard alphanumerical ordering.
 
 ## Sources and References
+- https://www.cs.emory.edu/~cheung/Courses/253/Syllabus/Text/trie01.html
+- https://www.qt.io/product/framework
+- https://doc.qt.io/
+- https://opendsa-server.cs.vt.edu/OpenDSA/Books/CS3/html/SkipList.html
+- https://www.kaggle.com/datasets/kasumil5x/howlongtobeat-games-completion-times
