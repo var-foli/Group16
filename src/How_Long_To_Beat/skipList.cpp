@@ -74,7 +74,7 @@ void SkipList::insert(const Node& node) {
 }
 
 //case sensitive search for title
-const Node* SkipList::search(const string& title) {
+optional<Node> SkipList::search(const string& title) {
     //cout << "Searching for " << title << endl;
     skipListNode* current = head;
 
@@ -89,10 +89,10 @@ const Node* SkipList::search(const string& title) {
     //at level 0, we search the exact match
     current = current->forward[0];
     if (current && current->data.title == title) {
-        return &current->data;
+        return current->data;
     }
     else {
-        return nullptr;
+        return Node{};
     }
 }
 

@@ -26,7 +26,7 @@ public:
 
     SkipList();
     void insert(const Node& node);
-    const Node* search(const string& title);
+    optional<Node> search(const string& title);
     int getSize();
 
 };
