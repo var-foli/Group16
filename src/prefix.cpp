@@ -114,26 +114,6 @@ tuple<vector<string>, vector<float>, vector<vector<string>>, vector<string>, vec
   }
 }
 
-// retrieved the node with matching name
-PrefixNode* PrefixTree::retrieve(PrefixNode* prefixNode, string name) {
-  if (name.length() == 0) {
-    // return the Node
-    return prefixNode;
-  } 
-  
-  int index = getIndex(name[0]);
-
-  if (index == -1) {
-    return nullptr;
-  }
-  
-  if (prefixNode->letters[index] != nullptr) {
-    // calling the function recursively, with the name inserted minus its first letter
-    return this->retrieve(prefixNode->letters[index], name.substr(1));
-  }
-  return nullptr;
-}
-
 bool PrefixTree::nodeEmpty(array<PrefixNode*,63> prefixNodes) {
   for (auto it = prefixNodes.begin(); it != prefixNodes.end(); it++) {
         if (*it != nullptr) {
