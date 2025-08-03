@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "ParseCSV.h"
+#include <optional>
 
 using namespace std;
 
